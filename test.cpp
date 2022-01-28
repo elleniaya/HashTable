@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../hash_test/hashtable.h"
+#include "hashtable.h"
 
 TEST(HashTable, ClearCheck) { 
 	HashTable test;
@@ -56,13 +56,13 @@ TEST(HashTable, EraseCheck) {
 TEST(HashTable, SizeCheck) {
 	HashTable test;
 
-	Value value1("Лиза", 7);
+	Value value1("Г‹ГЁГ§Г ", 7);
 	test.insert("6800232", value1);
-	Value value2("Оля", 90);
+	Value value2("ГЋГ«Гї", 90);
 	test.insert("89077700232", value2);
-	Value value3("Андрей", 29);
+	Value value3("ГЂГ­Г¤Г°ГҐГ©", 29);
 	test.insert("1818", value3);
-	Value value4("Виктор", 15);
+	Value value4("Г‚ГЁГЄГІГ®Г°", 15);
 	test.insert("9339200000", value4);
 
 	int size = test.size();
@@ -80,21 +80,21 @@ TEST(HashTable, EmptyCheck) {
 
 TEST(HashTable, SwapCheck) {
 	HashTable test1;
-	Value value1("Инна", 20);
+	Value value1("Г€Г­Г­Г ", 20);
 	test1.insert("13579", value1);
-	Value value2("Лена", 18);
+	Value value2("Г‹ГҐГ­Г ", 18);
 	test1.insert("6666666", value2);
 
 	HashTable test2;
-	Value value3("Ира", 36);
+	Value value3("Г€Г°Г ", 36);
 	test2.insert("999999", value3);
-	Value value4("Александр", 99);
+	Value value4("ГЂГ«ГҐГЄГ±Г Г­Г¤Г°", 99);
 	test2.insert("2788", value4);
 
 	HashTable test3;
-	Value value5("Инна", 20);
+	Value value5("Г€Г­Г­Г ", 20);
 	test3.insert("13579", value5);
-	Value value6("Лена", 18);
+	Value value6("Г‹ГҐГ­Г ", 18);
 	test3.insert("6666666", value6);
 	
 	test1.swap(test2);
@@ -152,15 +152,15 @@ TEST(HashTable, OperatorAssignmentCheck) {
 
 TEST(HashTable, OperatorEqualityCheck) {
 	HashTable test1;
-	Value value1("Инна", 20);
+	Value value1("Г€Г­Г­Г ", 20);
 	test1.insert("13579", value1);
-	Value value2("Лена", 18);
+	Value value2("Г‹ГҐГ­Г ", 18);
 	test1.insert("6666666", value2);
 
 	HashTable test2;
-	Value value3("Инна", 20);
+	Value value3("Г€Г­Г­Г ", 20);
 	test2.insert("13579", value3);
-	Value value4("Лена", 18);
+	Value value4("Г‹ГҐГ­Г ", 18);
 	test2.insert("6666666", value4);
 
 	bool a = false;
@@ -170,13 +170,13 @@ TEST(HashTable, OperatorEqualityCheck) {
 
 TEST(HashTable, OperatorInequalityCheck) {
 	HashTable test1;
-	Value value1("Инна", 20);
+	Value value1("Г€Г­Г­Г ", 20);
 	test1.insert("13579", value1);
-	Value value2("Лена", 18);
+	Value value2("Г‹ГҐГ­Г ", 18);
 	test1.insert("6666666", value2);
 
 	HashTable test2;
-	Value value3("Ира", 36);
+	Value value3("Г€Г°Г ", 36);
 	test2.insert("999999", value3);
 
 	bool a = false;
@@ -186,15 +186,15 @@ TEST(HashTable, OperatorInequalityCheck) {
 
 TEST(HashTable, OperatorInequalityCheck1) {
 	HashTable test1;
-	Value value1("Виолетта", 20);
+	Value value1("Г‚ГЁГ®Г«ГҐГІГІГ ", 20);
 	test1.insert("13579", value1);
-	Value value2("Лиана", 18);
+	Value value2("Г‹ГЁГ Г­Г ", 18);
 	test1.insert("6666666", value2);
 
 	HashTable test2;
-	Value value3("Сэм", 36);
+	Value value3("Г‘ГЅГ¬", 36);
 	test2.insert("999999", value3);
-	Value value4("Оливер", 99);
+	Value value4("ГЋГ«ГЁГўГҐГ°", 99);
 	test2.insert("2788", value4);
 
 	bool a = false;
