@@ -13,7 +13,7 @@ TEST(HashTable, ClearCheck) {
 	test.insert("7", second);
 
 	test.clear();
-    EXPECT_EQ(test.size(), 0);
+        EXPECT_EQ(test.size(), 0);
 }
 
 TEST(HashTable, InsertCheck) {
