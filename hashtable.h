@@ -33,6 +33,7 @@ public:
 	bool erase(const Key& k);
 
 	//Inserting a value pair <k, v>.
+	//If there is already an element with the same key in the table, replace it.
 	bool insert(const Key& k, const Value& v);
 
 	//Search for a value, given key k. 
