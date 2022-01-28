@@ -19,11 +19,13 @@ TEST(HashTable, ClearCheck) {
 TEST(HashTable, InsertCheck) {
 	HashTable test;
 
-	Value value("Aria", 19);
+	Value value1("Sara", 25);
+	Value value2("Aria", 19);
 
-	test.insert("393939", value);
+	test.insert("393939", value1);
+	test.insert("393939", value2);
 	bool a = false;
-	if (test["393939"].age == value.age && test["393939"].name == value.name) a = true;
+	if (test["393939"].age == value2.age && test["393939"].name == value2.name) a = true;
 	EXPECT_EQ(a, true);
 }
 
@@ -56,13 +58,13 @@ TEST(HashTable, EraseCheck) {
 TEST(HashTable, SizeCheck) {
 	HashTable test;
 
-	Value value1("Ëèçà", 7);
+	Value value1("Liza", 7);
 	test.insert("6800232", value1);
-	Value value2("Îëÿ", 90);
+	Value value2("Mary", 90);
 	test.insert("89077700232", value2);
-	Value value3("Àíäðåé", 29);
+	Value value3("Ro", 29);
 	test.insert("1818", value3);
-	Value value4("Âèêòîð", 15);
+	Value value4("Victor", 15);
 	test.insert("9339200000", value4);
 
 	int size = test.size();
@@ -80,21 +82,21 @@ TEST(HashTable, EmptyCheck) {
 
 TEST(HashTable, SwapCheck) {
 	HashTable test1;
-	Value value1("Èííà", 20);
+	Value value1("Inna", 20);
 	test1.insert("13579", value1);
-	Value value2("Ëåíà", 18);
+	Value value2("Elena", 18);
 	test1.insert("6666666", value2);
 
 	HashTable test2;
-	Value value3("Èðà", 36);
+	Value value3("Mia", 36);
 	test2.insert("999999", value3);
-	Value value4("Àëåêñàíäð", 99);
+	Value value4("Alex", 99);
 	test2.insert("2788", value4);
 
 	HashTable test3;
-	Value value5("Èííà", 20);
+	Value value5("Inna", 20);
 	test3.insert("13579", value5);
-	Value value6("Ëåíà", 18);
+	Value value6("Elena", 18);
 	test3.insert("6666666", value6);
 	
 	test1.swap(test2);
@@ -107,7 +109,7 @@ TEST(HashTable, AtCheck) {
 	HashTable test;
 
 	Value value("Max", 69);
-    test.insert("90", value);
+        test.insert("90", value);
 
 	Value val = test.at("90");
 	bool a = false;
@@ -142,6 +144,7 @@ TEST(HashTable, OperatorAssignmentCheck) {
 	HashTable test2;
 
 	test2 = test1;
+
 	bool a = false;
 
 	if (test2 == test1) a = true;
@@ -152,15 +155,15 @@ TEST(HashTable, OperatorAssignmentCheck) {
 
 TEST(HashTable, OperatorEqualityCheck) {
 	HashTable test1;
-	Value value1("Èííà", 20);
+	Value value1("Inna", 20);
 	test1.insert("13579", value1);
-	Value value2("Ëåíà", 18);
+	Value value2("Elena", 18);
 	test1.insert("6666666", value2);
 
 	HashTable test2;
-	Value value3("Èííà", 20);
+	Value value3("Inna", 20);
 	test2.insert("13579", value3);
-	Value value4("Ëåíà", 18);
+	Value value4("Elena", 18);
 	test2.insert("6666666", value4);
 
 	bool a = false;
@@ -170,13 +173,13 @@ TEST(HashTable, OperatorEqualityCheck) {
 
 TEST(HashTable, OperatorInequalityCheck) {
 	HashTable test1;
-	Value value1("Èííà", 20);
+	Value value1("Rimma", 20);
 	test1.insert("13579", value1);
-	Value value2("Ëåíà", 18);
+	Value value2("Jo", 18);
 	test1.insert("6666666", value2);
 
 	HashTable test2;
-	Value value3("Èðà", 36);
+	Value value3("Camila", 36);
 	test2.insert("999999", value3);
 
 	bool a = false;
@@ -186,15 +189,15 @@ TEST(HashTable, OperatorInequalityCheck) {
 
 TEST(HashTable, OperatorInequalityCheck1) {
 	HashTable test1;
-	Value value1("Âèîëåòòà", 20);
+	Value value1("Violetta", 20);
 	test1.insert("13579", value1);
-	Value value2("Ëèàíà", 18);
+	Value value2("Liana", 18);
 	test1.insert("6666666", value2);
 
 	HashTable test2;
-	Value value3("Ñýì", 36);
+	Value value3("Sam", 36);
 	test2.insert("999999", value3);
-	Value value4("Îëèâåð", 99);
+	Value value4("Oliver", 99);
 	test2.insert("2788", value4);
 
 	bool a = false;
