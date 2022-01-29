@@ -182,9 +182,7 @@ TEST(HashTable, OperatorInequalityCheck) {
 	Value value3("Camila", 36);
 	test2.insert("999999", value3);
 
-	bool a = false;
-	if (test1 != test2) a = true;
-	EXPECT_EQ(a, true);
+    ASSERT_NE(test1, test2);
 }
 
 TEST(HashTable, OperatorInequalityCheck1) {

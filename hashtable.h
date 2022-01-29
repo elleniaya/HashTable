@@ -61,9 +61,13 @@ public:
 private:
 	int hash_func(const Key& s) const;
 	void resize_Table(size_t new_size);
-	std::vector <std::list <std::pair <Key, Value>>*> Table;  
+    // CR: Table -> table_
+	std::vector <std::list <std::pair <Key, Value>>*> Table;
+    // CR: mSize -> size_
 	size_t mSize;
 	size_t size_vector_table;
+    // CR: static const
 	size_t start_size = 100;
+    // CR: static const
 	double RESIZE_CONST = 0.3;
 };

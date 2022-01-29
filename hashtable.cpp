@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "hashtable.h"
 
+// CR: move to init list
 HashTable::HashTable() {
 	mSize = 0;
 	size_vector_table = 0;
@@ -8,6 +9,7 @@ HashTable::HashTable() {
 }
 
 HashTable::~HashTable() {
+    // CR: clear elements one by one
 	Table.clear();
 }
 
@@ -26,6 +28,7 @@ bool HashTable::insert(const Key& k, const Value& v) {
 	std::pair <Key, Value> data(k, v); 
 
 	if (size_vector_table >= RESIZE_CONST * Table.size()) {
+        // CR: recalculate hash and positions
 		resize_Table(2 * Table.size());
 	}
 
@@ -50,6 +53,7 @@ bool HashTable::insert(const Key& k, const Value& v) {
 			collision_list->push_back(data);
 		}
 		else {
+            // CR: do not increase size
 			*val = data;
 		}
 	}
@@ -73,6 +77,7 @@ bool HashTable::contains(const Key& k) const {
 	return false;
 }
 
+// CR: change size_vector_table
 bool HashTable::erase(const Key& k) {
 	int ind = hash_func(k);
 	std::list<std::pair<Key, Value>>* collision_list = Table[ind];
@@ -100,11 +105,13 @@ Value& HashTable::at(const Key& k) {
 			return val->second;
 		}
 	}
+    // CR: throw std::runtime_error instead
 	throw "There is no element in the table for the given key";
 }
 
 
 const Value& HashTable::at(const Key& k) const {
+    // CR: add separate method const_at
 	int ind = hash_func(k);
 	std::list<std::pair<Key, Value>>* collision_list = Table[ind];
 	if (collision_list != nullptr) {
@@ -134,6 +141,7 @@ void HashTable::clear() {
 	}
 	Table.clear();
 	mSize = 0;
+    // CR: size_vector_table
 }
 
 HashTable& HashTable::operator=(const HashTable& b) {
@@ -156,18 +164,25 @@ HashTable& HashTable::operator=(const HashTable& b) {
 	return *this;
 }
 
-HashTable::HashTable(const HashTable& b) { 
+// CR: rewrite with init list
+HashTable::HashTable(const HashTable& b) {
 	*this = b;
 }
 
 void HashTable::swap(HashTable& b) {
 	std::swap(mSize, b.mSize);
 	std::swap(Table, b.Table);
+    // CR: size_vector_table
 }
 
 Value& HashTable::operator[](const Key& k) {
 	int ind = hash_func(k);
 	if (Table[ind] == nullptr) {
+        /*
+         * 1. create this list
+         * 2. insert pair k, Value("", 0);
+         * 3. return reference to newly inserted value
+         */
 		throw "There is no element in the table for the given key";
 	}
 	std::list<std::pair<Key, Value>>* collision_list = Table[ind];
@@ -191,6 +206,7 @@ bool operator==(const HashTable& a, const HashTable& b) {
 
 			if (collision_list_a->size() != collision_list_b->size()) return false;
 
+            // CR: use contains
 			if (collision_list_a != nullptr && collision_list_b != nullptr) {
 				for (auto itr = collision_list_a->begin(); itr != collision_list_a->end(); itr++) {
 					Key k = itr->first;
