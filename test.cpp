@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "hashtable.h"
 
-TEST(HashTable, ClearCheck) { 
+TEST(HashTable, ClearCheck) {
 	HashTable test;
 
 	Value first("Ban", 26);
@@ -13,7 +13,7 @@ TEST(HashTable, ClearCheck) {
 	test.insert("7", second);
 
 	test.clear();
-        EXPECT_EQ(test.size(), 0);
+	ASSERT_EQ(test.size(), 0);
 }
 
 TEST(HashTable, InsertCheck) {
@@ -24,35 +24,54 @@ TEST(HashTable, InsertCheck) {
 
 	test.insert("393939", value1);
 	test.insert("393939", value2);
-	bool a = false;
-	if (test["393939"].age == value2.age && test["393939"].name == value2.name) a = true;
-	EXPECT_EQ(a, true);
+	ASSERT_EQ(test["393939"].age, value2.age);
+	ASSERT_EQ(test["393939"].name, value2.name);
 }
 
-TEST(HashTable, ContainsCheck) { 
+TEST(HashTable, InsertReplaceCheck) {
+	HashTable test;
+	Value value1("Bella", 18);
+	Value value2("Edward", 28);
+	test.insert("7777", value1);
+	test.insert("7777", value2);
+
+	ASSERT_EQ(test["7777"].age, value2.age);
+	ASSERT_EQ(test["7777"].name, value2.name);
+	ASSERT_EQ(test.size(), 1);
+}
+
+TEST(HashTable, ContainsTrueCheck) {
 	HashTable test;
 
 	Value value("Richard", 57);
 
 	test.insert("3297284", value);
 
-	bool a = false;
-	if (test.contains("3297284")) a = true;
-	EXPECT_EQ(a, true);
+	ASSERT_TRUE(test.contains("3297284"));
 }
 
-TEST(HashTable, EraseCheck) {
+TEST(HashTable, ContainsFalseCheck) {
+	HashTable test;
+
+	ASSERT_FALSE(test.contains("3297284"));
+}
+
+TEST(HashTable, EraseTrueCheck) {
 	HashTable test;
 
 	Value value("Lia", 9);
 
 	test.insert("8883939", value);
-	int start_size = test.size();
 
 	test.erase("8883939");
-	int finish_size = test.size();
 
-	EXPECT_EQ(start_size - 1, finish_size);
+	ASSERT_EQ(test.size(), 0);
+	ASSERT_FALSE(test.contains("8883939"));
+}
+
+TEST(HashTable, EraseFalseCheck) {
+	HashTable test;
+	ASSERT_FALSE(test.erase("84385"));
 }
 
 TEST(HashTable, SizeCheck) {
@@ -66,18 +85,34 @@ TEST(HashTable, SizeCheck) {
 	test.insert("1818", value3);
 	Value value4("Victor", 15);
 	test.insert("9339200000", value4);
+	test.erase("9339200000");
+	ASSERT_EQ(test.size(), 3);
+}
 
-	int size = test.size();
-	EXPECT_EQ(size, 4);
+TEST(HashTable, SizeNullCheck) {
+	HashTable test;
+	ASSERT_EQ(test.size(), 0);
 }
 
 TEST(HashTable, EmptyCheck) {
 	HashTable test;
 
-	Value value("Polo", 5);
-	test.insert("3993", value);
+	Value value1("Polo", 5);
+	Value value2("Nick",19);
+	Value value3("Anthony", 78);
 
-	EXPECT_EQ(test.empty(), false);
+	test.insert("3993", value1);
+	test.insert("47329", value2);
+	test.insert("9", value3);
+
+	test.erase("3993");
+	test.erase("47329");
+	test.erase("9");
+
+	ASSERT_TRUE(test.empty());
+	ASSERT_FALSE(test.contains("3993"));
+	ASSERT_FALSE(test.contains("47329"));
+	ASSERT_FALSE(test.contains("9"));
 }
 
 TEST(HashTable, SwapCheck) {
@@ -98,25 +133,26 @@ TEST(HashTable, SwapCheck) {
 	test3.insert("13579", value5);
 	Value value6("Elena", 18);
 	test3.insert("6666666", value6);
-	
+
+	HashTable test4;
+	Value value7("Mia", 36);
+	test4.insert("999999", value7);
+	Value value8("Alex", 99);
+	test4.insert("2788", value8);
+
 	test1.swap(test2);
-	bool a = false;
-	if (test2 == test3) a = true;
-	EXPECT_EQ(a, true);
+	ASSERT_EQ(test2, test3);
+	ASSERT_EQ(test1, test4);
 }
 
 TEST(HashTable, AtCheck) {
 	HashTable test;
 
 	Value value("Max", 69);
-        test.insert("90", value);
+	test.insert("90", value);
 
-	Value val = test.at("90");
-	bool a = false;
-
-	if ((val.name == value.name) && (val.age == value.age)) a = true;
-
-	EXPECT_EQ(a, true);
+	ASSERT_EQ(test.at("90").age, value.age);
+	ASSERT_EQ(test.at("90").name, value.name);
 }
 
 TEST(HashTable, CopyConstructorCheck) {
@@ -127,11 +163,8 @@ TEST(HashTable, CopyConstructorCheck) {
 	test1.insert("6664666", value2);
 
 	HashTable test2(test1);
-	bool a = false;
 
-	if (test2 == test1) a = true;
-
-	EXPECT_EQ(a, true);
+	ASSERT_EQ(test1, test2);
 }
 
 TEST(HashTable, OperatorAssignmentCheck) {
@@ -142,16 +175,20 @@ TEST(HashTable, OperatorAssignmentCheck) {
 	test1.insert("6664666", value2);
 
 	HashTable test2;
+    Value value3("Sam", 50);
+	test2.insert("89992173", value3);
+	Value value4("Damon", 28);
+	test2.insert("68632000", value4);
+	Value value5("Jonny", 70);
+	test2.insert("8888", value5);
 
 	test2 = test1;
 
-	bool a = false;
-
-	if (test2 == test1) a = true;
-
-	EXPECT_EQ(a, true);
+	ASSERT_EQ(test1, test2);
+	ASSERT_FALSE(test2.contains("89992173"));
+	ASSERT_FALSE(test2.contains("68632000"));
+	ASSERT_FALSE(test2.contains("8888"));
 }
-
 
 TEST(HashTable, OperatorEqualityCheck) {
 	HashTable test1;
@@ -166,9 +203,7 @@ TEST(HashTable, OperatorEqualityCheck) {
 	Value value4("Elena", 18);
 	test2.insert("6666666", value4);
 
-	bool a = false;
-	if (test1 == test2) a = true;
-	EXPECT_EQ(a, true);
+	ASSERT_TRUE(test1 == test2);
 }
 
 TEST(HashTable, OperatorInequalityCheck) {
@@ -182,7 +217,7 @@ TEST(HashTable, OperatorInequalityCheck) {
 	Value value3("Camila", 36);
 	test2.insert("999999", value3);
 
-    ASSERT_NE(test1, test2);
+	ASSERT_TRUE(test1 != test2);
 }
 
 TEST(HashTable, OperatorInequalityCheck1) {
@@ -198,9 +233,7 @@ TEST(HashTable, OperatorInequalityCheck1) {
 	Value value4("Oliver", 99);
 	test2.insert("2788", value4);
 
-	bool a = false;
-	if (test1 != test2) a = true;
-	EXPECT_EQ(a, true);
+	ASSERT_TRUE(test1 != test2);
 }
 
 
@@ -209,12 +242,15 @@ TEST(HashTable, OperatorIndexCheck) {
 	Value first("Sara", 50);
 
 	test.insert("757474", first);
-	Value val = test["757474"];
-	
-	bool a = false;
-	if ((test["757474"].name == first.name) && (test["757474"].age == first.age)) {
-		a = true;
-	}
 
-	EXPECT_EQ(a, true);
+	ASSERT_EQ(test["757474"].age, first.age);
+	ASSERT_EQ(test["757474"].name, first.name);
+}
+
+TEST(HashTable, OperatorIndexNullCheck) {
+	HashTable test;
+	Value val("", 0);
+
+	ASSERT_EQ(test["8888"].name, val.name);
+	ASSERT_EQ(test["8888"].age, val.age);
 }
