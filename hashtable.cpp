@@ -1,9 +1,7 @@
-#include "pch.h"
 #include "hashtable.h"
 
-//HashTable::RESIZE_CONST = 0.3;
-
 HashTable::HashTable() : size_(0), size_vector_table(0) {
+    // CR: use ctor vector( size_type count ) in init list instead
 	table_.resize(start_size, nullptr);
 }
 
@@ -13,7 +11,6 @@ HashTable::~HashTable() {
 			delete table_[i];
 		}
 	}
-	table_.clear();
 }
 
 int HashTable::hash_func(const Key& s) const {
@@ -29,6 +26,8 @@ void HashTable::resize_Table(size_t new_size) {
 	int new_hash;
 	for (size_t i = 0; i < table_.size(); i++) {
 		std::list<std::pair<Key, Value>>*& collision_list = table_[i];
+        // CR: possible infinite loop, use second list
+        // CR: add test
 		for (auto itr = collision_list->begin(); itr != collision_list->end(); itr++) {
 			new_hash = hash_func(itr->first);
 
@@ -74,6 +73,8 @@ bool HashTable::insert(const Key& k, const Value& v) {
 		}
 		else {
 			*val = data;
+            // CR: add test
+            return false;
 		}
 	}
 
@@ -127,7 +128,7 @@ Value& HashTable::const_at(const Key& k) const {
 }
 
 Value& HashTable::at(const Key& k) {
-	return(const_at(k));
+    return const_at(k);
 }
 
 
@@ -181,6 +182,7 @@ HashTable& HashTable::operator=(const HashTable& b) {
 }
 
 HashTable::HashTable(const HashTable& b) : size_(b.size_), size_vector_table(b.size_vector_table) {
+    // CR: move to init list
 	table_.resize(b.table_.size(), nullptr);
 	copy_table(*this, b);
 }
@@ -204,6 +206,10 @@ Value& HashTable::operator[](const Key& k) {
 	if (val != collision_list->end()) {
 		return val->second;
 	}
+    else {
+        // CR: insert default value
+        // CR: add test
+    }
 }
 
 bool operator==(const HashTable& a, const HashTable& b) {
@@ -216,9 +222,11 @@ bool operator==(const HashTable& a, const HashTable& b) {
 			for (auto itr = collision_list_a->begin(); itr != collision_list_a->end(); itr++) {
 
 				if (b.contains(itr->first)) {
-					if (itr->second.age == b.at(itr->first).age && itr->second.name == b.at(itr->first).name) {
-						continue;
-					}
+                    if (itr->second.age == b.at(itr->first).age && itr->second.name == b.at(itr->first).name) {
+                        continue;
+                    }
+                    // CR: add test
+                    else return false;
 				}
 				else return false;
 			}

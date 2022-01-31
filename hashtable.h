@@ -34,6 +34,7 @@ public:
 
 	//Inserting a value pair <k, v>.
 	//If there is already an element with the same key in the table, replace it.
+    // CR: write when true / false returned
 	bool insert(const Key& k, const Value& v);
 
 	//Search for a value, given key k. 
@@ -69,6 +70,6 @@ private:
 	size_t size_;
 	size_t size_vector_table;
 	static const size_t start_size = 100;
-        const double RESIZE_CONST = 0.3;
+    static constexpr double RESIZE_CONST = 0.3;
 	//static const double RESIZE_CONST;
 };
