@@ -21,19 +21,17 @@ void HashTable::resize_table(size_t new_size) {
 	size_t size = table_.size();
 	table_.resize(new_size, nullptr);
 	for (size_t i = 0; i < size; i++) {
-		if (table_[i] == nullptr) { continue; }
-		else {
-			std::list< std::pair <Key, Value>> collision_list = *table_[i];
-			table_[i]->clear();
-			int new_hash;
-			for (auto itr = collision_list.begin(); itr != collision_list.end(); itr++) {
-				new_hash = hash_func(itr->first);
-				if (table_[new_hash] == nullptr) {
-					table_[new_hash] = new std::list <std::pair <Key, Value>>;
-				}
-				table_[new_hash]->push_back(*itr);
-			}
-		}
+        if (table_[i] == nullptr) continue;
+        std::list< std::pair <Key, Value>> collision_list = *table_[i];
+        table_[i]->clear();
+        int new_hash;
+        for (auto itr = collision_list.begin(); itr != collision_list.end(); itr++) {
+            new_hash = hash_func(itr->first);
+            if (table_[new_hash] == nullptr) {
+                table_[new_hash] = new std::list <std::pair <Key, Value>>;
+            }
+            table_[new_hash]->push_back(*itr);
+        }
 	}
 }
 
@@ -208,26 +206,24 @@ Value& HashTable::operator[](const Key& k) {
 			return val->second;
 		}
 	}
+    assert(false);
 }
 
 bool operator==(const HashTable& a, const HashTable& b) {
 	if (a.size_ != b.size_) return false;
 	for (size_t i = 0; i < a.table_.size(); i++) {
-		if (a.table_[i] == nullptr) { continue; }
-		else {
-			std::list<std::pair<Key, Value>>* collision_list_a = a.table_[i];
+        if (a.table_[i] == nullptr) continue;
+        std::list <std::pair<Key, Value>> *collision_list_a = a.table_[i];
 
-			for (auto itr = collision_list_a->begin(); itr != collision_list_a->end(); itr++) {
+        for (auto itr = collision_list_a->begin(); itr != collision_list_a->end(); itr++) {
 
-				if (b.contains(itr->first)) {
-					if (itr->second.age == b.at(itr->first).age && itr->second.name == b.at(itr->first).name) {
-						continue;
-					}
-					else return false;
-				}
-				else return false;
-			}
-		}
+            if (b.contains(itr->first)) {
+                if (itr->second.age == b.at(itr->first).age && itr->second.name == b.at(itr->first).name) {
+                    continue;
+                }
+            }
+            return false;
+        }
 	}
 	return true;
 }
